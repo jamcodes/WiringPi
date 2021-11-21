@@ -4,25 +4,43 @@ file(STRINGS "VERSION" projectVersion)
 
 project(wiringPi VERSION ${projectVersion} LANGUAGES C)
 
+
+option(WIRING_PI_MAKE_PINS "Add target \"pins\" generating pins.pdf. Not called implicitly by the \"all\" target." OFF)
+
+add_compile_options(
+    -mcpu=cortex-a72
+    -mfpu=neon-vfpv4
+    -Wall
+    -Wextra
+    -Winline
+    -pipe
+)
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Threads REQUIRED)
 find_library(LibRt rt REQUIRED)
+find_library(LibM m REQUIRED)
+find_library(LibCrypt crypt REQUIRED)
 
 include(GNUInstallDirs)
 
 
-file(RELATIVE_PATH relativeRpath
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
-)
-set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/${relativeRpath})
+# file(RELATIVE_PATH relativeRpath
+#     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
+#     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
+# )
+# set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/${relativeRpath})
 
 
+add_subdirectory(devLib)
 add_subdirectory(wiringPi)
-
+add_subdirectory(wiringPiD)
+add_subdirectory(gpio)
+add_subdirectory(pins)
 
 install(EXPORT wiringPi
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/wiringPi

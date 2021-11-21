@@ -1,0 +1,7 @@
+[] gipo executable needs to have UID and GID set - this works only if cmake is ran with superuser privileges
+   RUNPATH needs to be set to a specific path (hardcoded, absolute path),
+   because binaries relying on the UID/GID bit can't use $ORIGIN or LD_LIBRARY_PATH
+   Try setting the INSTALL_RPATH to location relative to install location of $<TARGET_FILE:wiringPi>
+
+[] when cross-compiling - don't build the binaries - gpio and wiringpid - unless explicitly enabled
+[] packaging - deb.
