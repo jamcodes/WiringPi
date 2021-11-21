@@ -1,0 +1,6 @@
+@PACKAGE_INIT@
+
+include(${CMAKE_CURRENT_LIST_DIR}/wiringPi.cmake)
+set_and_check(wiringPi_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set(wiringPi_LIBRARIES wiringPi::wiringPi)
+check_required_components(wiringPi)
